@@ -1,8 +1,8 @@
 #include <SDL.h>
 #include <list>
-#include "camera.h"
 #include "IOHandler.h"
 #include "gameObject.h"
+#include "pane.h"
 
 class MainWindow {
 	private:
@@ -12,8 +12,8 @@ class MainWindow {
 		
 	public:
 		SDL_Window* gWindow = nullptr;
-		Camera* activeCamera = nullptr;
 		IOHandler* gIOHandler = nullptr;
+		Pane mainPane;
 		
 		MainWindow();
 
@@ -24,5 +24,4 @@ class MainWindow {
 		int exit();                 // safely exits
 
 		int addGameObject(GameObject* o);
-		int addCamera(Camera* c);
 };

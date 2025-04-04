@@ -67,8 +67,8 @@ int MainWindow::tick(double deltaTime){
 }
 
 int MainWindow::render(){
-	if (activeCamera == nullptr) return 1;
-	SDL_Renderer* activeRenderer = activeCamera->cameraRenderer;
+	if (mainPane.paneRenderer == nullptr) return 1;
+	SDL_Renderer* activeRenderer = mainPane.paneRenderer;
 	SDL_SetRenderDrawColor(activeRenderer, 35, 30, 40, 255);
 	SDL_RenderClear(activeRenderer);
 
@@ -90,11 +90,5 @@ int MainWindow::exit(){
 int MainWindow::addGameObject(GameObject* o){
 	gameObjects.push_front(o);
 	o->init();
-	return 0;
-}
-
-int MainWindow::addCamera(Camera* c){
-	c->attach(gWindow);
-	addGameObject(c);
 	return 0;
 }
