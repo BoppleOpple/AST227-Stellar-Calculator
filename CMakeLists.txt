@@ -8,8 +8,8 @@ set(SOURCES
 src/main.cpp
 src/mainWindow.h
 src/mainWindow.cpp
-src/camera.h
-src/camera.cpp
+src/pane.h
+src/pane.cpp
 src/IOHandler.h
 src/IOHandler.cpp
 src/gameObject.h

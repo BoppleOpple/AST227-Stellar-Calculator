@@ -21,7 +21,7 @@ int MainWindow::init(){
 	}
 	printf("sdl didnt die \\o/\n");
 
-	gWindow = SDL_CreateWindow(
+	linkedWindow = SDL_CreateWindow(
 		"Stellar Calculator",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
@@ -30,11 +30,12 @@ int MainWindow::init(){
 		SDL_WINDOW_SHOWN
 	);
 
-	if (gWindow == NULL) {
+	if (linkedWindow == NULL) {
 		fprintf(stderr, "Window could not be created: %s\n", SDL_GetError());
 		return 1;
 	}
 
+	if ( Pane::init() ) return 1;
 	return 0;
 }
 
@@ -67,18 +68,18 @@ int MainWindow::tick(double deltaTime){
 }
 
 int MainWindow::render(){
-	if (mainPane.paneRenderer == nullptr) return 1;
-	SDL_Renderer* activeRenderer = mainPane.paneRenderer;
-	SDL_SetRenderDrawColor(activeRenderer, 35, 30, 40, 255);
-	SDL_RenderClear(activeRenderer);
+	if (paneRenderer == nullptr) return 1;
+
+	SDL_SetRenderDrawColor(paneRenderer, 35, 30, 40, 255);
+	SDL_RenderClear(paneRenderer);
 
 	// apply changes to canvas
-	SDL_RenderPresent(activeRenderer);
+	SDL_RenderPresent(paneRenderer);
 	return 0;
 }
 
 int MainWindow::exit(){
-	SDL_DestroyWindow( gWindow );
+	SDL_DestroyWindow( linkedWindow );
 
 	printf("exit\n");
 

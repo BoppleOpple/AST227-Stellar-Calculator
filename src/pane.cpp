@@ -16,7 +16,7 @@ int Pane::init(){
 
 	// create renderer tied to linkedWindow
 	paneRenderer = SDL_CreateRenderer(linkedWindow, -1, SDL_RENDERER_ACCELERATED);
-
+	
 	if (!paneRenderer) {
 		fprintf(stderr, "Screen surface could not be created: %s\n", SDL_GetError());
 		return 1;

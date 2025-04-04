@@ -4,16 +4,14 @@
 #include "gameObject.h"
 #include "pane.h"
 
-class MainWindow {
+class MainWindow : public Pane {
 	private:
 		int width = 800;
 		int height = 600;
 		std::list<GameObject*> gameObjects;
 		
 	public:
-		SDL_Window* gWindow = nullptr;
 		IOHandler* gIOHandler = nullptr;
-		Pane mainPane;
 		
 		MainWindow();
 
