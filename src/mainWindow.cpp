@@ -36,6 +36,9 @@ int MainWindow::init(){
 	}
 
 	if ( Pane::init() ) return 1;
+
+	SDL_SetRenderTarget(paneRenderer, nullptr);
+	
 	return 0;
 }
 
@@ -72,6 +75,8 @@ int MainWindow::render(){
 
 	SDL_SetRenderDrawColor(paneRenderer, 35, 30, 40, 255);
 	SDL_RenderClear(paneRenderer);
+
+
 
 	// apply changes to canvas
 	SDL_RenderPresent(paneRenderer);

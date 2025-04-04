@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_render.h>
 
 class Pane {
 	private:
@@ -8,6 +9,7 @@ class Pane {
 	public:
 		SDL_Window* linkedWindow = nullptr;
 		SDL_Renderer* paneRenderer = nullptr;
+		SDL_Texture* paneTexture = nullptr;
 		
 		Pane();
 		Pane(int* w, int* h);
