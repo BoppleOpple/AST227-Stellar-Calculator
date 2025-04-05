@@ -47,7 +47,7 @@ int MainWindow::init(){
 
 	// if ( Container::init() ) return 1;
 
-	paneRenderer = SDL_CreateRenderer(linkedWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+	paneRenderer = SDL_CreateRenderer(linkedWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC);
 
 	Pane *newPane = new Pane(paneRect.w/2 - 50, paneRect.h/2 - 50, 100, 100);
 
@@ -71,20 +71,24 @@ int MainWindow::loop(){
 
 		if ( tick( frameTime ) ) return 1;
 		if ( render() ) return 1;
-		
+
 		// apply changes to canvas
 		SDL_RenderPresent(paneRenderer);
+		
 
 		Uint64 endFrame = SDL_GetTicks64();
 		frameTime = endFrame - startFrame;
+
+		// printf("rendered frame %llu in %u ms\n", frame, frameTime);
 
 		IOResponse = gIOHandler->handleEvents();
 
 		if (IOResponse->quit) return 0;
 
+
 		frame++;
-		Uint32 sleepTime = SDL_max(FRAME_DURATION_S * 1000 - frameTime, 0);
-		SDL_Delay(sleepTime);
+		// Uint32 sleepTime = SDL_max(FRAME_DURATION_S * 1000 - frameTime, 0);
+		// SDL_Delay(sleepTime);
 
 		endFrame = SDL_GetTicks64();
 		frameTime = endFrame - startFrame;
