@@ -12,7 +12,9 @@
 #include "gameObject.h"
 #include "mainWindow.h"
 
-MainWindow::MainWindow(){}
+MainWindow::MainWindow() : Container(){}
+MainWindow::MainWindow(int w, int h) : Container(w, h){}
+MainWindow::MainWindow(int x, int y, int w, int h) : Container(x, y, w, h){}
 
 int MainWindow::init(){
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0){
@@ -25,8 +27,8 @@ int MainWindow::init(){
 		"Stellar Calculator",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		width,
-		height,
+		paneRect.w,
+		paneRect.h,
 		SDL_WINDOW_SHOWN
 	);
 
@@ -38,7 +40,7 @@ int MainWindow::init(){
 	if ( Pane::init() ) return 1;
 
 	SDL_SetRenderTarget(paneRenderer, nullptr);
-	
+
 	return 0;
 }
 
@@ -90,11 +92,5 @@ int MainWindow::exit(){
 
 	SDL_Quit();
 
-	return 0;
-}
-
-int MainWindow::addGameObject(GameObject* o){
-	gameObjects.push_front(o);
-	o->init();
 	return 0;
 }

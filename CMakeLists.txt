@@ -10,6 +10,8 @@ src/mainWindow.h
 src/mainWindow.cpp
 src/pane.h
 src/pane.cpp
+src/container.h
+src/container.cpp
 src/IOHandler.h
 src/IOHandler.cpp
 src/gameObject.h

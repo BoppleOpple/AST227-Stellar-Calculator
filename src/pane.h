@@ -1,10 +1,10 @@
 #include <SDL.h>
+#include <SDL_rect.h>
 #include <SDL_render.h>
 
 class Pane {
-	private:
-		int* viewportWidth;
-		int* viewportHeight;
+	protected:
+		SDL_Rect paneRect;
 
 	public:
 		SDL_Window* linkedWindow = nullptr;
@@ -12,7 +12,8 @@ class Pane {
 		SDL_Texture* paneTexture = nullptr;
 		
 		Pane();
-		Pane(int* w, int* h);
+		Pane(int w, int h);
+		Pane(int x, int y, int w, int h);
 
 		int init(); // initialises renderer
 		int tick(double deltaTime);

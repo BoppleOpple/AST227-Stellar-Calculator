@@ -2,12 +2,24 @@
 #include <SDL_pixels.h>
 #include <SDL_render.h>
 
-Pane::Pane(){}
+#define PANE_DEFAULT_WIDTH 100
+#define PANE_DEFAULT_HEIGHT 100
 
-Pane::Pane(int* w, int* h){
-	viewportWidth = w;
-	viewportHeight = h;
-	Pane();
+Pane::Pane(){
+	paneRect.x = 0;
+	paneRect.y = 0;
+	paneRect.w = PANE_DEFAULT_WIDTH;
+	paneRect.h = PANE_DEFAULT_HEIGHT;
+}
+
+Pane::Pane(int w, int h) : Pane(){
+	paneRect.w = w;
+	paneRect.h = h;
+}
+
+Pane::Pane(int x, int y, int w, int h) : Pane(w, h){
+	paneRect.x = x;
+	paneRect.y = y;
 }
 
 int Pane::init(){
@@ -28,8 +40,8 @@ int Pane::init(){
 		paneRenderer,
 		SDL_PIXELFORMAT_BGRA8888,
 		SDL_TEXTUREACCESS_TARGET,
-		*viewportWidth,
-		*viewportHeight
+		paneRect.w,
+		paneRect.h
 	);
 
 	if (!paneTexture) {
