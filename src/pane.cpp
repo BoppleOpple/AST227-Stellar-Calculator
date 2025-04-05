@@ -1,6 +1,7 @@
 #include "pane.h"
 #include <SDL_pixels.h>
 #include <SDL_render.h>
+#include <cstdio>
 
 #define PANE_DEFAULT_WIDTH 100
 #define PANE_DEFAULT_HEIGHT 100
@@ -29,7 +30,8 @@ int Pane::init(){
 	}
 
 	// create renderer tied to linkedWindow
-	paneRenderer = SDL_CreateRenderer(linkedWindow, -1, SDL_RENDERER_ACCELERATED);
+	if (!paneRenderer)
+		paneRenderer = SDL_CreateRenderer(linkedWindow, -1, SDL_RENDERER_TARGETTEXTURE);
 
 	if (!paneRenderer) {
 		fprintf(stderr, "Screen surface could not be created: %s\n", SDL_GetError());
@@ -38,7 +40,7 @@ int Pane::init(){
 
 	paneTexture = SDL_CreateTexture(
 		paneRenderer,
-		SDL_PIXELFORMAT_BGRA8888,
+		SDL_PIXELFORMAT_RGBA8888,
 		SDL_TEXTUREACCESS_TARGET,
 		paneRect.w,
 		paneRect.h
@@ -49,7 +51,10 @@ int Pane::init(){
 		return 1;
 	}
 
+	printf("%i, %i\n", paneRect.w, paneRect.h);
+
 	SDL_SetRenderTarget(paneRenderer, paneTexture);
+	SDL_SetTextureBlendMode(paneTexture, SDL_BLENDMODE_BLEND);
 
 	return 0;
 }
@@ -59,15 +64,22 @@ int Pane::tick(double deltaTime){
 }
 
 int Pane::render(){
+	SDL_Texture *oldTarget = SDL_GetRenderTarget(paneRenderer);
+	SDL_SetRenderTarget(paneRenderer, paneTexture);
+	
 	SDL_SetRenderDrawColor(paneRenderer, 255, 255, 255, 255);
 	SDL_RenderClear(paneRenderer);
 
-	// apply changes to texture
-	SDL_RenderPresent(paneRenderer);
+	SDL_SetRenderTarget(paneRenderer, oldTarget);
 	return 0;
 }
 
 int Pane::attach(SDL_Window *window){
 	linkedWindow = window;
 	return 0;
+}
+
+
+SDL_Rect *Pane::getRect() {
+	return &paneRect;
 }

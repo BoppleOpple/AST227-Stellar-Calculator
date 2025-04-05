@@ -20,4 +20,5 @@ class Pane {
 		int render();
 
 		int attach(SDL_Window* window);
+		SDL_Rect *getRect();
 };
