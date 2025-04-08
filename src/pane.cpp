@@ -1,12 +1,15 @@
 #include "pane.h"
 #include <SDL_pixels.h>
+#include <SDL_rect.h>
 #include <SDL_render.h>
 #include <cstdio>
+#include <memory>
 
 #define PANE_DEFAULT_WIDTH 100
 #define PANE_DEFAULT_HEIGHT 100
 
 Pane::Pane(){
+	parent = std::weak_ptr<Pane>();
 	paneRect.x = 0;
 	paneRect.y = 0;
 	paneRect.w = PANE_DEFAULT_WIDTH;
@@ -46,7 +49,9 @@ int Pane::init(SDL_Renderer* renderer){
 		return 1;
 	}
 
-	printf("Pane created with size %ix%i\n", paneRect.w, paneRect.h);
+	SDL_Point position = getGlobalPosition();
+
+	printf("Pane created with size %ix%i at global position (%i, %i)\n", paneRect.w, paneRect.h, position.x, position.y);
 
 	SDL_SetRenderTarget(paneRenderer, paneTexture);
 	SDL_SetTextureBlendMode(paneTexture, SDL_BLENDMODE_BLEND);
@@ -91,7 +96,7 @@ int Pane::init(SDL_Window* window, int flags = SDL_RENDERER_ACCELERATED | SDL_RE
 	return 0;
 }
 
-int Pane::tick(double deltaTime){
+int Pane::tick(double deltaTime, IOHandlerResponse *io){
 	return 0;
 }
 
@@ -106,6 +111,29 @@ int Pane::render(){
 	return 0;
 }
 
+int Pane::setParent(std::weak_ptr<Pane> parentPane) {
+	if (parentPane.expired()) {
+		printf("removing parent\n");
+		parent.reset();
+		return 0;
+	}
+
+	parent = parentPane;
+	return 0;
+}
+
 SDL_Rect *Pane::getRect() {
 	return &paneRect;
+}
+
+SDL_Point Pane::getGlobalPosition() {
+	SDL_Point position = {paneRect.x, paneRect.y};
+
+	if (!parent.expired()) {
+		SDL_Point offset = parent.lock()->getGlobalPosition();
+		position.x += offset.x;
+		position.y += offset.y;
+	}
+
+	return position;
 }

@@ -5,16 +5,17 @@
 
 class Container : public Pane {
 	protected:
-		std::map<std::string, Pane> panes;
+		std::map<std::string, std::shared_ptr<Pane>> panes;
 
 	public:
 		Container();
 		Container(int w, int h);
 		Container(int x, int y, int w, int h);
 
+		int tick(double deltaTime, IOHandlerResponse *io);
 		int render();
 
-		int addPane(std::string name, Pane pane);
+		int addPane(std::string name, std::shared_ptr<Pane>);
 		int removePane(std::string name);
-		Pane *getPane(std::string name);
+		std::weak_ptr<Pane> getPane(std::string name);
 };

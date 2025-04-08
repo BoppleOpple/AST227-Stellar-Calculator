@@ -10,6 +10,7 @@
 #include <SDL_video.h>
 #include <chrono>
 #include <ctime>
+#include <memory>
 #include <new>
 #include <thread>
 #include "IOHandler.h"
@@ -48,10 +49,10 @@ int MainWindow::init(){
 
 	if ( Container::init(linkedWindow, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC) ) return 1;
 	
-	Pane newPane = Pane(paneRect.w/2 - 50, paneRect.h/2 - 50, 100, 100);
-	newPane.init(paneRenderer);
+	std::shared_ptr<Pane> newPane = std::make_shared<Pane>(paneRect.w/2 - 50, paneRect.h/2 - 50, 100, 100);
+	newPane->init(paneRenderer);
 	addPane("new pane", newPane);
-
+	
 	paneTexture = nullptr;
 
 	return 0;
@@ -64,11 +65,11 @@ int MainWindow::loop(){
 
 	while (true){
 		Uint64 startFrame = SDL_GetTicks64();
-		
+
 		IOResponse = gIOHandler->handleEvents();
 		if (IOResponse->quit) return 0;
 
-		if ( tick( frameTime ) ) return 1;
+		if ( tick( frameTime, IOResponse ) ) return 1;
 		if ( render() ) return 1;
 
 		// apply changes to canvas
@@ -80,8 +81,6 @@ int MainWindow::loop(){
 
 		// printf("rendered frame %llu in %u ms\n", frame, frameTime);
 
-
-
 		frame++;
 		// Uint32 sleepTime = SDL_max(FRAME_DURATION_S * 1000 - frameTime, 0);
 		// SDL_Delay(sleepTime);
@@ -91,10 +90,6 @@ int MainWindow::loop(){
 
 		printf("frame %llu (%u ms | %u fps)\n", frame, frameTime, 1000/frameTime);
 	}
-	return 0;
-}
-
-int MainWindow::tick(double deltaTime){
 	return 0;
 }
 

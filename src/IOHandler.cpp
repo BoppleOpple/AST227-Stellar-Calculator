@@ -30,3 +30,7 @@ IOHandlerResponse* IOHandler::handleEvents(){
 	
 	return response;
 }
+
+SDL_Point IOHandler::getMousePosition(SDL_Point offset = {0, 0}) {
+	return {mouseX + offset.x, mouseY + offset.y};
+}

@@ -1,6 +1,6 @@
 #pragma once
-// #include "controllable.h"
 
+#include <SDL_rect.h>
 struct IOHandlerResponse {
 	bool quit = false;
 };
@@ -15,4 +15,5 @@ class IOHandler {
 		IOHandler();
 
 		IOHandlerResponse* handleEvents();
+		SDL_Point getMousePosition(SDL_Point offset);
 };

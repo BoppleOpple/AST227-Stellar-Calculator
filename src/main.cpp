@@ -1,19 +1,20 @@
 #include "mainWindow.h"
 #include "IOHandler.h"
+#include <memory>
 
-MainWindow game;
+std::shared_ptr<MainWindow> game;
 IOHandler globalIOHandler;
 
 int main(int argc, char* args[]){
 	globalIOHandler = IOHandler();
-	game = MainWindow();
+	game = std::make_shared<MainWindow>();
 
-	if (game.init()) return 1;
+	if (game->init()) return 1;
 
-	game.gIOHandler = &globalIOHandler;
+	game->gIOHandler = &globalIOHandler;
 
 
-	if (game.loop()) return 1;
-	if (game.exit()) return 1;
+	if (game->loop()) return 1;
+	if (game->exit()) return 1;
 	return 0;
 }
