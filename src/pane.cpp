@@ -22,16 +22,48 @@ Pane::Pane(int x, int y, int w, int h) : Pane(w, h){
 	paneRect.x = x;
 	paneRect.y = y;
 }
-
-int Pane::init(){
-	if (linkedWindow == NULL) {
-		fprintf(stderr, "Window was never defined.\n");
+int Pane::init(SDL_Renderer* renderer){
+	if (renderer == NULL) {
+		fprintf(stderr, "Renderer cannot be null.\n");
 		return 1;
 	}
 
+	linkedWindow = SDL_RenderGetWindow(renderer);
+
 	// create renderer tied to linkedWindow
-	if (!paneRenderer)
-		paneRenderer = SDL_CreateRenderer(linkedWindow, -1, SDL_RENDERER_TARGETTEXTURE);
+	paneRenderer = renderer;
+
+	paneTexture = SDL_CreateTexture(
+		paneRenderer,
+		SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_TARGET,
+		paneRect.w,
+		paneRect.h
+	);
+
+	if (!paneTexture) {
+		fprintf(stderr, "Texture could not be created: %s\n", SDL_GetError());
+		return 1;
+	}
+
+	printf("Pane created with size %ix%i\n", paneRect.w, paneRect.h);
+
+	SDL_SetRenderTarget(paneRenderer, paneTexture);
+	SDL_SetTextureBlendMode(paneTexture, SDL_BLENDMODE_BLEND);
+
+	return 0;
+}
+
+int Pane::init(SDL_Window* window, int flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE){
+	if (window == NULL) {
+		fprintf(stderr, "Window cannot be null.\n");
+		return 1;
+	}
+
+	linkedWindow = window;
+
+	// create renderer tied to linkedWindow
+	paneRenderer = SDL_CreateRenderer(linkedWindow, -1, flags);
 
 	if (!paneRenderer) {
 		fprintf(stderr, "Screen surface could not be created: %s\n", SDL_GetError());
@@ -51,7 +83,7 @@ int Pane::init(){
 		return 1;
 	}
 
-	printf("%i, %i\n", paneRect.w, paneRect.h);
+	printf("Pane created with size %ix%i\n", paneRect.w, paneRect.h);
 
 	SDL_SetRenderTarget(paneRenderer, paneTexture);
 	SDL_SetTextureBlendMode(paneTexture, SDL_BLENDMODE_BLEND);
@@ -73,12 +105,6 @@ int Pane::render(){
 	SDL_SetRenderTarget(paneRenderer, oldTarget);
 	return 0;
 }
-
-int Pane::attach(SDL_Window *window){
-	linkedWindow = window;
-	return 0;
-}
-
 
 SDL_Rect *Pane::getRect() {
 	return &paneRect;

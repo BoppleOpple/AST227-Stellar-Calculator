@@ -3,15 +3,16 @@
 #include <SDL_mouse.h>
 #include <SDL_render.h>
 #include <SDL_stdinc.h>
+#include <cstddef>
 #include <cstdio>
 #include <SDL.h>
 #include <SDL_timer.h>
 #include <SDL_video.h>
 #include <chrono>
 #include <ctime>
+#include <new>
 #include <thread>
 #include "IOHandler.h"
-#include "gameObject.h"
 #include "mainWindow.h"
 
 #define MAIN_WINDOW_DEFAULT_WIDTH 600
@@ -45,18 +46,13 @@ int MainWindow::init(){
 		return 1;
 	}
 
-	// if ( Container::init() ) return 1;
+	if ( Container::init(linkedWindow, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC) ) return 1;
+	
+	Pane newPane = Pane(paneRect.w/2 - 50, paneRect.h/2 - 50, 100, 100);
+	newPane.init(paneRenderer);
+	addPane("new pane", newPane);
 
-	paneRenderer = SDL_CreateRenderer(linkedWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC);
-
-	Pane *newPane = new Pane(paneRect.w/2 - 50, paneRect.h/2 - 50, 100, 100);
-
-	newPane->attach(linkedWindow);
-	newPane->paneRenderer = paneRenderer;
-
-	newPane->init();
-
-	addPane("new pane", *newPane);
+	paneTexture = nullptr;
 
 	return 0;
 }
@@ -68,6 +64,9 @@ int MainWindow::loop(){
 
 	while (true){
 		Uint64 startFrame = SDL_GetTicks64();
+		
+		IOResponse = gIOHandler->handleEvents();
+		if (IOResponse->quit) return 0;
 
 		if ( tick( frameTime ) ) return 1;
 		if ( render() ) return 1;
@@ -81,9 +80,6 @@ int MainWindow::loop(){
 
 		// printf("rendered frame %llu in %u ms\n", frame, frameTime);
 
-		IOResponse = gIOHandler->handleEvents();
-
-		if (IOResponse->quit) return 0;
 
 
 		frame++;

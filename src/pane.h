@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_rect.h>
 #include <SDL_render.h>
+#include <SDL_video.h>
 
 class Pane {
 	protected:
@@ -15,10 +16,12 @@ class Pane {
 		Pane(int w, int h);
 		Pane(int x, int y, int w, int h);
 
-		int init(); // initialises renderer
+		// initialises renderer
+		int init(SDL_Window* window, int flags);
+		int init(SDL_Renderer* renderer);
+
 		int tick(double deltaTime);
 		int render();
 
-		int attach(SDL_Window* window);
 		SDL_Rect *getRect();
 };
