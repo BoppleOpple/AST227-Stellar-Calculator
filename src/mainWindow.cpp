@@ -49,11 +49,21 @@ int MainWindow::init(){
 
 	if ( Container::init(linkedWindow, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC) ) return 1;
 	
-	std::shared_ptr<Pane> newPane = std::make_shared<Pane>(paneRect.w/2 - 50, paneRect.h/2 - 50, 100, 100);
+	std::shared_ptr<Container> newContainer = std::make_shared<Container>(paneRect.w/2 - 100, paneRect.h/2 - 100, 200, 200);
+
+	std::shared_ptr<Pane> newPane = std::make_shared<Pane>(50, 50, 100, 100);
+	newPane->setBackgroundColor(0xff, 0x90, 0x60, 0xff);
+
+	addPane("new container", newContainer);
+	newContainer->addPane("new pane", newPane);
+	
+	newContainer->init(paneRenderer);
 	newPane->init(paneRenderer);
-	addPane("new pane", newPane);
+	
 	
 	paneTexture = nullptr;
+
+	setBackgroundColor(0x33, 0x33, 0x33, 0xff);
 
 	return 0;
 }
@@ -88,22 +98,8 @@ int MainWindow::loop(){
 		endFrame = SDL_GetTicks64();
 		frameTime = endFrame - startFrame;
 
-		printf("frame %llu (%u ms | %u fps)\n", frame, frameTime, 1000/frameTime);
+		// printf("frame %llu (%u ms | %u fps)\n", frame, frameTime, 1000/frameTime);
 	}
-	return 0;
-}
-
-int MainWindow::render(){
-	if (paneRenderer == nullptr) return 1;
-	SDL_Texture *oldTarget = SDL_GetRenderTarget(paneRenderer);
-	SDL_SetRenderTarget(paneRenderer, paneTexture);
-
-	SDL_SetRenderDrawColor(paneRenderer, 35, 30, 40, 255);
-	SDL_RenderClear(paneRenderer);
-
-	Container::render();
-
-	SDL_SetRenderTarget(paneRenderer, oldTarget);
 	return 0;
 }
 

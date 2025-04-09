@@ -104,10 +104,15 @@ int Pane::render(){
 	SDL_Texture *oldTarget = SDL_GetRenderTarget(paneRenderer);
 	SDL_SetRenderTarget(paneRenderer, paneTexture);
 	
-	SDL_SetRenderDrawColor(paneRenderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(paneRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 	SDL_RenderClear(paneRenderer);
 
 	SDL_SetRenderTarget(paneRenderer, oldTarget);
+	return 0;
+}
+
+int Pane::setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xff) {
+	backgroundColor = {r, g, b, a};
 	return 0;
 }
 

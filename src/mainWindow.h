@@ -11,8 +11,7 @@ class MainWindow : public Container {
 		MainWindow(int w, int h);
 		MainWindow(int x, int y, int w, int h);
 
-		int init();   // initialises renderer and such
-		int loop();   // outer loop function, handles exceptions/events and organizwes exec order
-		int render(); // renders scene
-		int exit();   // safely exits
+		int init(); // initialises renderer and such
+		int loop(); // outer loop function, handles exceptions/events and organizwes exec order
+		int exit(); // safely exits
 };
