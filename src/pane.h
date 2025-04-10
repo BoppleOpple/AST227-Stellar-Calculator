@@ -1,3 +1,5 @@
+#pragma once
+
 #include "IOHandler.h"
 #include <SDL.h>
 #include <SDL_pixels.h>
@@ -5,9 +7,11 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 #include <memory>
+#include <string>
 
 class Pane : public std::enable_shared_from_this<Pane> {
 	protected:
+		bool needsUpdate = true;
 		SDL_Rect paneRect;
 		std::weak_ptr<Pane> parent;
 		SDL_Color backgroundColor = {0xff, 0xff, 0xff, 0xff};
@@ -16,6 +20,7 @@ class Pane : public std::enable_shared_from_this<Pane> {
 		SDL_Window* linkedWindow = nullptr;
 		SDL_Renderer* paneRenderer = nullptr;
 		SDL_Texture* paneTexture = nullptr;
+		std::string name = "Pane";
 		
 		Pane();
 		Pane(int w, int h);
@@ -25,7 +30,9 @@ class Pane : public std::enable_shared_from_this<Pane> {
 		int init(SDL_Window* window, int flags);
 		int init(SDL_Renderer* renderer);
 
-		virtual int tick(double deltaTime, IOHandlerResponse *io);
+		int refresh();
+
+		virtual int tick(double deltaTime, IOHandler &io);
 		virtual int render();
 
 		int setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);

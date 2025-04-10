@@ -15,6 +15,7 @@
 #include <thread>
 #include "IOHandler.h"
 #include "mainWindow.h"
+#include "button.h"
 
 #define MAIN_WINDOW_DEFAULT_WIDTH 600
 #define MAIN_WINDOW_DEFAULT_HEIGHT 400
@@ -48,10 +49,12 @@ int MainWindow::init(){
 	}
 
 	if ( Container::init(linkedWindow, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC) ) return 1;
+
+	name = "main window";
 	
 	std::shared_ptr<Container> newContainer = std::make_shared<Container>(paneRect.w/2 - 100, paneRect.h/2 - 100, 200, 200);
 
-	std::shared_ptr<Pane> newPane = std::make_shared<Pane>(50, 50, 100, 100);
+	std::shared_ptr<Button> newPane = std::make_shared<Button>(50, 50, 100, 100);
 	newPane->setBackgroundColor(0xff, 0x90, 0x60, 0xff);
 
 	addPane("new container", newContainer);
@@ -60,7 +63,6 @@ int MainWindow::init(){
 	newContainer->init(paneRenderer);
 	newPane->init(paneRenderer);
 	
-	
 	paneTexture = nullptr;
 
 	setBackgroundColor(0x33, 0x33, 0x33, 0xff);
@@ -68,7 +70,7 @@ int MainWindow::init(){
 	return 0;
 }
 
-int MainWindow::loop(){
+int MainWindow::loop(IOHandler &gIOHandler){
 	IOHandlerResponse* IOResponse = nullptr;
 	Uint64 frame = 0;
 	Uint32 frameTime = 0;
@@ -76,14 +78,17 @@ int MainWindow::loop(){
 	while (true){
 		Uint64 startFrame = SDL_GetTicks64();
 
-		IOResponse = gIOHandler->handleEvents();
+		IOResponse = gIOHandler.handleEvents();
 		if (IOResponse->quit) return 0;
 
-		if ( tick( frameTime, IOResponse ) ) return 1;
-		if ( render() ) return 1;
+		if ( tick( frameTime, gIOHandler ) ) return 1;
 
-		// apply changes to canvas
-		SDL_RenderPresent(paneRenderer);
+		if (needsUpdate) {
+			if ( render() ) return 1;
+
+			// apply changes to canvas
+			SDL_RenderPresent(paneRenderer);
+		}
 		
 
 		Uint64 endFrame = SDL_GetTicks64();

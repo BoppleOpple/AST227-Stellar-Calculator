@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL.h>
 #include <map>
 #include <string>
@@ -12,7 +14,7 @@ class Container : public Pane {
 		Container(int w, int h);
 		Container(int x, int y, int w, int h);
 
-		int tick(double deltaTime, IOHandlerResponse *io);
+		int tick(double deltaTime, IOHandler &io);
 		int render();
 
 		int addPane(std::string name, std::shared_ptr<Pane>);

@@ -8,7 +8,7 @@ Container::Container() : Pane(){}
 Container::Container(int w, int h) : Pane(w, h){}
 Container::Container(int x, int y, int w, int h) : Pane(x, y, w, h){};
 
-int Container::tick(double deltaTime, IOHandlerResponse *io) {
+int Container::tick(double deltaTime, IOHandler &io) {
 	std::map<std::string, std::shared_ptr<Pane>>::iterator iter;
 
 	for (iter = panes.begin(); iter != panes.end(); iter++)
@@ -18,6 +18,8 @@ int Container::tick(double deltaTime, IOHandlerResponse *io) {
 }
 
 int Container::render() {
+	if (!needsUpdate) return 0;
+
 	SDL_Texture *oldTarget = SDL_GetRenderTarget(paneRenderer);
 	SDL_SetRenderTarget(paneRenderer, paneTexture);
 
@@ -32,11 +34,15 @@ int Container::render() {
 	}
 
 	SDL_SetRenderTarget(paneRenderer, oldTarget);
+
+	needsUpdate = false;
 	return 0;
 }
 
 int Container::addPane(std::string name, std::shared_ptr<Pane> pane) {
 	pane->setParent(shared_from_this());
+	pane->name = name;
+	
 	panes.emplace(name, pane);
 
 	printf("pane \"%s\" added!\n", name.c_str());

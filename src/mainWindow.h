@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL.h>
 #include <list>
 #include "IOHandler.h"
@@ -5,13 +7,11 @@
 
 class MainWindow : public Container {
 	public:
-		IOHandler* gIOHandler = nullptr;
-		
 		MainWindow();
 		MainWindow(int w, int h);
 		MainWindow(int x, int y, int w, int h);
 
 		int init(); // initialises renderer and such
-		int loop(); // outer loop function, handles exceptions/events and organizwes exec order
+		int loop(IOHandler &gIOHandler); // outer loop function, handles exceptions/events and organizwes exec order
 		int exit(); // safely exits
 };

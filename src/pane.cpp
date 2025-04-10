@@ -88,7 +88,7 @@ int Pane::init(SDL_Window* window, int flags = SDL_RENDERER_ACCELERATED | SDL_RE
 		return 1;
 	}
 
-	printf("Pane created with size %ix%i\n", paneRect.w, paneRect.h);
+	printf("Pane \"%s\" created with size %ix%i\n", name.c_str(), paneRect.w, paneRect.h);
 
 	SDL_SetRenderTarget(paneRenderer, paneTexture);
 	SDL_SetTextureBlendMode(paneTexture, SDL_BLENDMODE_BLEND);
@@ -96,11 +96,27 @@ int Pane::init(SDL_Window* window, int flags = SDL_RENDERER_ACCELERATED | SDL_RE
 	return 0;
 }
 
-int Pane::tick(double deltaTime, IOHandlerResponse *io){
+int Pane::refresh() {
+	needsUpdate = true;
+
+	printf("updating pane \"%s\"\n", name.c_str());
+
+	if (!parent.expired()) {
+		parent.lock()->refresh();
+	}
+
+	return 0;
+}
+
+int Pane::tick(double deltaTime, IOHandler &io){
 	return 0;
 }
 
 int Pane::render(){
+	if (!needsUpdate) return 0;
+
+	printf("RENDERING pane \"%s\"\n", name.c_str());
+
 	SDL_Texture *oldTarget = SDL_GetRenderTarget(paneRenderer);
 	SDL_SetRenderTarget(paneRenderer, paneTexture);
 	
@@ -108,6 +124,8 @@ int Pane::render(){
 	SDL_RenderClear(paneRenderer);
 
 	SDL_SetRenderTarget(paneRenderer, oldTarget);
+
+	needsUpdate = false;
 	return 0;
 }
 
@@ -118,7 +136,7 @@ int Pane::setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xff) {
 
 int Pane::setParent(std::weak_ptr<Pane> parentPane) {
 	if (parentPane.expired()) {
-		printf("removing parent\n");
+		printf("removing parent of \"%s\"\n", name.c_str());
 		parent.reset();
 		return 0;
 	}
