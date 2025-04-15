@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <list>
-#include "IOHandler.h"
+#include "../IOHandler.h"
 #include "container.h"
 
 class MainWindow : public Container {

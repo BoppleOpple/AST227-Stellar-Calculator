@@ -1,4 +1,4 @@
-#include "mainWindow.h"
+#include "genericUIElements/mainWindow.h"
 #include "IOHandler.h"
 #include <memory>
 

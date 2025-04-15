@@ -13,7 +13,7 @@
 #include <memory>
 #include <new>
 #include <thread>
-#include "IOHandler.h"
+#include "../IOHandler.h"
 #include "container.h"
 #include "mainWindow.h"
 #include "button.h"

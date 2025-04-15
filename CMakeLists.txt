@@ -6,14 +6,14 @@ project(Stellar_Calculator VERSION 1.0)
 
 set(SOURCES
 src/main.cpp
-src/mainWindow.h
-src/mainWindow.cpp
-src/pane.h
-src/pane.cpp
-src/button.h
-src/button.cpp
-src/container.h
-src/container.cpp
+src/genericUIElements/mainWindow.h
+src/genericUIElements/mainWindow.cpp
+src/genericUIElements/pane.h
+src/genericUIElements/pane.cpp
+src/genericUIElements/button.h
+src/genericUIElements/button.cpp
+src/genericUIElements/container.h
+src/genericUIElements/container.cpp
 src/IOHandler.h
 src/IOHandler.cpp
 )
