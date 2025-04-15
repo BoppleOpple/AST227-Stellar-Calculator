@@ -12,6 +12,7 @@ class MainWindow : public Container {
 		MainWindow(int x, int y, int w, int h);
 
 		int init(); // initialises renderer and such
+		int tick(double deltaTime, IOHandler &io);
 		int loop(IOHandler &gIOHandler); // outer loop function, handles exceptions/events and organizwes exec order
 		int exit(); // safely exits
 };

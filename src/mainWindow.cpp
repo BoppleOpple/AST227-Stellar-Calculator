@@ -14,6 +14,7 @@
 #include <new>
 #include <thread>
 #include "IOHandler.h"
+#include "container.h"
 #include "mainWindow.h"
 #include "button.h"
 
@@ -68,6 +69,10 @@ int MainWindow::init(){
 	setBackgroundColor(0x33, 0x33, 0x33, 0xff);
 
 	return 0;
+}
+
+int MainWindow::tick(double deltaTime, IOHandler &io) {
+	return Container::tick(deltaTime, io);
 }
 
 int MainWindow::loop(IOHandler &gIOHandler){

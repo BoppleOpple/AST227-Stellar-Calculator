@@ -42,7 +42,7 @@ int Container::render() {
 int Container::addPane(std::string name, std::shared_ptr<Pane> pane) {
 	pane->setParent(shared_from_this());
 	pane->name = name;
-	
+
 	panes.emplace(name, pane);
 
 	printf("pane \"%s\" added!\n", name.c_str());

@@ -36,6 +36,8 @@ class Pane : public std::enable_shared_from_this<Pane> {
 		virtual int render();
 
 		int setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+		virtual int resize(int w, int h);
+		virtual int move(int x, int y);
 
 		int setParent(std::weak_ptr<Pane> parentPane);
 		SDL_Rect *getRect();

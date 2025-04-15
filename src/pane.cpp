@@ -134,6 +134,30 @@ int Pane::setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xff) {
 	return 0;
 }
 
+int Pane::resize(int w, int h) {
+	if (w <= 0) return 0;
+	if (h <= 0) return 0;
+	paneRect.w = w;
+	paneRect.h = h;
+
+	paneTexture = SDL_CreateTexture(
+		paneRenderer,
+		SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_TARGET,
+		w,
+		h
+	);
+
+	return 0;
+}
+
+int Pane::move(int x, int y) {
+	paneRect.x = x;
+	paneRect.y = y;
+	return 0;
+}
+
+
 int Pane::setParent(std::weak_ptr<Pane> parentPane) {
 	if (parentPane.expired()) {
 		printf("removing parent of \"%s\"\n", name.c_str());
@@ -157,6 +181,6 @@ SDL_Point Pane::getGlobalPosition() {
 		position.x += offset.x;
 		position.y += offset.y;
 	}
-
+	
 	return position;
 }

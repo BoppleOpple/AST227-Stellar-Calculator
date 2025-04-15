@@ -3,7 +3,6 @@
 #include <SDL_rect.h>
 
 struct IOHandlerResponse {
-	SDL_Point mousePos = {0, 0};
 	bool quit = false;
 };
 
@@ -18,4 +17,5 @@ class IOHandler {
 
 		IOHandlerResponse* handleEvents();
 		SDL_Point getMousePosition(SDL_Point offset = {0, 0});
+		bool mouseButtonDown(int button = 1);
 };
