@@ -14,9 +14,9 @@
 #include <new>
 #include <thread>
 #include "../IOHandler.h"
-#include "container.h"
+#include "generic/container.h"
+#include "generic/button.h"
 #include "mainWindow.h"
-#include "button.h"
 
 #define MAIN_WINDOW_DEFAULT_WIDTH 600
 #define MAIN_WINDOW_DEFAULT_HEIGHT 400

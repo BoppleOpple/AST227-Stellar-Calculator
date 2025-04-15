@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <list>
 #include "../IOHandler.h"
-#include "container.h"
+#include "generic/container.h"
 
 class MainWindow : public Container {
 	public:
