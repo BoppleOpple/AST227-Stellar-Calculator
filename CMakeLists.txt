@@ -6,14 +6,18 @@ project(Stellar_Calculator VERSION 1.0)
 
 set(SOURCES
 src/main.cpp
-src/genericUIElements/mainWindow.h
-src/genericUIElements/mainWindow.cpp
-src/genericUIElements/pane.h
-src/genericUIElements/pane.cpp
-src/genericUIElements/button.h
-src/genericUIElements/button.cpp
-src/genericUIElements/container.h
-src/genericUIElements/container.cpp
+src/UIElements/mainWindow.h
+src/UIElements/mainWindow.cpp
+src/UIElements/EMGraph.h
+src/UIElements/EMGraph.cpp
+src/UIElements/generic/pane.h
+src/UIElements/generic/pane.cpp
+src/UIElements/generic/button.h
+src/UIElements/generic/button.cpp
+src/UIElements/generic/container.h
+src/UIElements/generic/container.cpp
+src/calculations.h
+src/calculations.cpp
 src/IOHandler.h
 src/IOHandler.cpp
 )

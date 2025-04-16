@@ -17,6 +17,7 @@
 #include "generic/container.h"
 #include "generic/button.h"
 #include "mainWindow.h"
+#include "EMGraph.h"
 
 #define MAIN_WINDOW_DEFAULT_WIDTH 600
 #define MAIN_WINDOW_DEFAULT_HEIGHT 400
@@ -52,26 +53,29 @@ int MainWindow::init(){
 	if ( Container::init(linkedWindow, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_PRESENTVSYNC) ) return 1;
 
 	name = "main window";
-	
-	std::shared_ptr<Container> newContainer = std::make_shared<Container>(paneRect.w/2 - 100, paneRect.h/2 - 100, 200, 200);
 
-	std::shared_ptr<Button> newPane = std::make_shared<Button>(50, 50, 100, 100);
-	newPane->setBackgroundColor(0xff, 0x90, 0x60, 0xff);
+	const int radiationPaneHeight = 50;
 
-	addPane("new container", newContainer);
-	newContainer->addPane("new pane", newPane);
+	std::shared_ptr<EMGraph> radiationPane = std::make_shared<EMGraph>(0, paneRect.h - radiationPaneHeight, paneRect.w, radiationPaneHeight);
+	radiationPane->setBackgroundColor(0x00, 0x00, 0x00, 0xff);
+
+	addPane("blackbody radiation graph", radiationPane);
+	radiationPane->init(paneRenderer);
 	
-	newContainer->init(paneRenderer);
-	newPane->init(paneRenderer);
-	
+
 	paneTexture = nullptr;
-
 	setBackgroundColor(0x33, 0x33, 0x33, 0xff);
 
 	return 0;
 }
 
 int MainWindow::tick(double deltaTime, IOHandler &io) {
+	EMGraph *radiationPane = dynamic_cast<EMGraph*>(getPane("blackbody radiation graph").lock().get());
+
+	if (radiationPane != nullptr) {
+		radiationPane->setTemperature(100 * io.getMousePosition().x);
+	}
+	
 	return Container::tick(deltaTime, io);
 }
 
