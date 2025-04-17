@@ -28,6 +28,7 @@ int Container::render() {
 	std::map<std::string, std::shared_ptr<Pane>>::iterator iter;
 
 	for (iter = panes.begin(); iter != panes.end(); iter++) {
+		if ( !(*iter->second).getVisible() ) continue;
 		if ( (*iter->second).render() ) return 1;
 		SDL_Rect *childRect = iter->second->getRect();
 		SDL_RenderCopy(paneRenderer, iter->second->paneTexture, nullptr, childRect);

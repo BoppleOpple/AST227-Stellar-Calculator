@@ -18,6 +18,7 @@
 #include "generic/button.h"
 #include "mainWindow.h"
 #include "EMGraph.h"
+#include "menuBar.h"
 
 #define MAIN_WINDOW_DEFAULT_WIDTH 600
 #define MAIN_WINDOW_DEFAULT_HEIGHT 400
@@ -54,28 +55,59 @@ int MainWindow::init(){
 
 	name = "main window";
 
-	const int radiationPaneHeight = 50;
-
-	std::shared_ptr<EMGraph> radiationPane = std::make_shared<EMGraph>(0, paneRect.h - radiationPaneHeight, paneRect.w, radiationPaneHeight);
-	radiationPane->setBackgroundColor(0x00, 0x00, 0x00, 0xff);
-
-	addPane("blackbody radiation graph", radiationPane);
-	radiationPane->init(paneRenderer);
+	addMenuBar();
+	addEMGraph();
 	
-
 	paneTexture = nullptr;
 	setBackgroundColor(0x33, 0x33, 0x33, 0xff);
 
 	return 0;
 }
 
-int MainWindow::tick(double deltaTime, IOHandler &io) {
-	EMGraph *radiationPane = dynamic_cast<EMGraph*>(getPane("blackbody radiation graph").lock().get());
+void MainWindow::addMenuBar() {
+	const int menuBarHeight = 30;
 
-	if (radiationPane != nullptr) {
-		radiationPane->setTemperature(100 * io.getMousePosition().x);
-	}
-	
+	std::shared_ptr<MenuBar> menu = std::make_shared<MenuBar>(0, 0, paneRect.w, menuBarHeight);
+	menu->setBackgroundColor(0x00, 0x50, 0x00, 0xff);
+
+	menu->init(paneRenderer);
+
+
+	std::shared_ptr<Button> mainScreenButton = std::make_shared<Button>();
+	mainScreenButton->init(paneRenderer);
+	mainScreenButton->onClick([](std::weak_ptr<Pane> self){
+		Button *buttonSelf = dynamic_cast<Button*>(self.lock().get());
+
+		printf("CLICK\n");
+	});
+
+	menu->addPane("main button", mainScreenButton);
+
+	std::shared_ptr<Button> variablesButton = std::make_shared<Button>();
+	variablesButton->init(paneRenderer);
+
+	menu->addPane("variables button", variablesButton);
+
+	addPane("menu bar", menu);
+}
+
+void MainWindow::addEMGraph() {
+	const int radiationPaneHeight = 50;
+
+	std::shared_ptr<EMGraph> radiationPane = std::make_shared<EMGraph>(0, paneRect.h - radiationPaneHeight, paneRect.w, radiationPaneHeight);
+	radiationPane->setBackgroundColor(0x00, 0x00, 0x00, 0xff);
+
+	radiationPane->init(paneRenderer);
+	addPane("blackbody radiation graph", radiationPane);
+}
+
+int MainWindow::tick(double deltaTime, IOHandler &io) {
+	// EMGraph *radiationPane = dynamic_cast<EMGraph*>(getPane("blackbody radiation graph").lock().get());
+
+	// if (radiationPane != nullptr) {
+	// 	radiationPane->setTemperature(100 * io.getMousePosition().x);
+	// }
+
 	return Container::tick(deltaTime, io);
 }
 

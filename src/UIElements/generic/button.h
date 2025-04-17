@@ -10,6 +10,9 @@ struct ButtonState {
 };
 
 class Button : public Pane {
+	private:
+		int init();
+		
 	public:
 		const static unsigned int NUM_STATES = 4;
 		typedef enum {
@@ -30,7 +33,10 @@ class Button : public Pane {
 		Button(int w, int h);
 		Button(int x, int y, int w, int h);
 
-		int tick(double deltaTime, IOHandler &io);
+		int init(SDL_Window *window, int flags) override;
+		int init(SDL_Renderer *renderer) override;
+
+		int tick(double deltaTime, IOHandler &io) override;
 
 		int setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xff);
 		int setBackgroundColor(State s, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xff);

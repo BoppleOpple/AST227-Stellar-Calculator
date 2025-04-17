@@ -6,6 +6,9 @@
 #include "generic/container.h"
 
 class MainWindow : public Container {
+	private:
+		void addMenuBar();
+		void addEMGraph();
 	public:
 		MainWindow();
 		MainWindow(int w, int h);

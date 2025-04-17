@@ -10,6 +10,8 @@ src/UIElements/mainWindow.h
 src/UIElements/mainWindow.cpp
 src/UIElements/EMGraph.h
 src/UIElements/EMGraph.cpp
+src/UIElements/MenuBar.h
+src/UIElements/MenuBar.cpp
 src/UIElements/generic/pane.h
 src/UIElements/generic/pane.cpp
 src/UIElements/generic/button.h
@@ -24,6 +26,7 @@ src/IOHandler.cpp
 
 add_executable(Stellar_Calculator ${SOURCES})
 find_package(SDL2 REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SDL2_LIBRARIES})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL_TTF_INCLUDE_DIR})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL_TTF_LIBRARIES})

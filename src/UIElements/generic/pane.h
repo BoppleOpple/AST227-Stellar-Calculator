@@ -11,6 +11,7 @@
 
 class Pane : public std::enable_shared_from_this<Pane> {
 	protected:
+		bool visible = true;
 		bool needsUpdate = true;
 		SDL_Rect paneRect;
 		std::weak_ptr<Pane> parent;
@@ -27,8 +28,8 @@ class Pane : public std::enable_shared_from_this<Pane> {
 		Pane(int x, int y, int w, int h);
 
 		// initialises renderer
-		int init(SDL_Window* window, int flags);
-		int init(SDL_Renderer* renderer);
+		virtual int init(SDL_Window* window, int flags);
+		virtual int init(SDL_Renderer* renderer);
 
 		int refresh();
 
@@ -38,6 +39,9 @@ class Pane : public std::enable_shared_from_this<Pane> {
 		int setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 		virtual int resize(int w, int h);
 		virtual int move(int x, int y);
+
+		int setVisible(bool value);
+		bool getVisible();
 
 		int setParent(std::weak_ptr<Pane> parentPane);
 		SDL_Rect *getRect();

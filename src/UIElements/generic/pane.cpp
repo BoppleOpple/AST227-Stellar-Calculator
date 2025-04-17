@@ -1,4 +1,5 @@
 #include "pane.h"
+#include <SDL_events.h>
 #include <SDL_pixels.h>
 #include <SDL_rect.h>
 #include <SDL_render.h>
@@ -157,6 +158,14 @@ int Pane::move(int x, int y) {
 	return 0;
 }
 
+int Pane::setVisible(bool value) {
+	visible = value;
+	return 0;
+}
+
+bool Pane::getVisible() {
+	return visible;
+}
 
 int Pane::setParent(std::weak_ptr<Pane> parentPane) {
 	if (parentPane.expired()) {
