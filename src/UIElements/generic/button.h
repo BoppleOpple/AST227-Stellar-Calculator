@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pane.h"
+#include "textPane.h"
 #include <SDL_pixels.h>
 #include <functional>
 #include <memory>
@@ -9,7 +10,7 @@ struct ButtonState {
 	SDL_Color stateColor = {0x00, 0x00, 0x00, 0xff};
 };
 
-class Button : public Pane {
+class Button : public TextPane {
 	private:
 		int init();
 		

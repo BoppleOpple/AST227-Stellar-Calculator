@@ -11,9 +11,9 @@ class MenuBar : public Container {
 		int nextPosition = 0;
 
 	public:
+		using Container::Container;
+		
 		MenuBar();
-		MenuBar(int w, int h);
-		MenuBar(int x, int y, int w, int h);
 
 		int init(SDL_Window* window, int flags) override;
 		int init(SDL_Renderer* renderer) override;

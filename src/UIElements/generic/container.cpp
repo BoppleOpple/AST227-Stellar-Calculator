@@ -4,10 +4,6 @@
 #include <map>
 #include <memory>
 
-Container::Container() : Pane(){}
-Container::Container(int w, int h) : Pane(w, h){}
-Container::Container(int x, int y, int w, int h) : Pane(x, y, w, h){};
-
 int Container::tick(double deltaTime, IOHandler &io) {
 	std::map<std::string, std::shared_ptr<Pane>>::iterator iter;
 

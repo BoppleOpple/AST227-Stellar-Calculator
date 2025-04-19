@@ -5,9 +5,7 @@
 #define MENU_BAR_DEFAULT_WIDTH 200
 #define MENU_BAR_DEFAULT_HEIGHT 50
 
-MenuBar::MenuBar() : MenuBar(MENU_BAR_DEFAULT_WIDTH, MENU_BAR_DEFAULT_HEIGHT) {}
-MenuBar::MenuBar(int w, int h) : MenuBar(0, 0, w, h) {}
-MenuBar::MenuBar(int x, int y, int w, int h) : Container(x, y, w, h) {}
+MenuBar::MenuBar() : MenuBar(0, 0, MENU_BAR_DEFAULT_WIDTH, MENU_BAR_DEFAULT_HEIGHT) {}
 
 int MenuBar::init(SDL_Window* window, int flags) {
 	if ( Container::init(window, flags) ) return 1;

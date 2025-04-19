@@ -1,5 +1,6 @@
 #include "button.h"
 #include "pane.h"
+#include "textPane.h"
 #include <SDL_pixels.h>
 #include <SDL_rect.h>
 #include <memory>
@@ -9,7 +10,7 @@
 
 Button::Button() : Button(0, 0, BUTTON_DEFAULT_WIDTH, BUTTON_DEFAULT_HEIGHT) {}
 Button::Button(int w, int h) : Button(0, 0, w, h) {}
-Button::Button(int x, int y, int w, int h) : Pane::Pane(x, y, w, h) {
+Button::Button(int x, int y, int w, int h) : TextPane::TextPane(x, y, w, h) {
 	states[IDLE    ].stateColor = {0x00, 0x00, 0x00, 0xff};
 	states[HOVERED ].stateColor = {0x22, 0x22, 0x22, 0xff};
 	states[CLICKED ].stateColor = {0x33, 0x33, 0x33, 0xff};
@@ -28,11 +29,11 @@ int Button::init() {
 }
 
 int Button::init(SDL_Window *window, int flags) {
-	if ( Pane::init(window, flags) ) return 1;
+	if ( TextPane::init(window, flags) ) return 1;
 	return init();
 };
 int Button::init(SDL_Renderer *renderer) {
-	if ( Pane::init(renderer) ) return 1;
+	if ( TextPane::init(renderer) ) return 1;
 	return init();
 };
 
@@ -74,7 +75,7 @@ int Button::tick(double deltaTime, IOHandler &io) {
 }
 
 int Button::setBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-	return Pane::setBackgroundColor(r, g, b, a);
+	return TextPane::setBackgroundColor(r, g, b, a);
 }
 
 int Button::setBackgroundColor(State s, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {

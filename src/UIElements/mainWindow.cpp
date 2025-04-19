@@ -26,9 +26,7 @@
 #define FPS 60
 #define FRAME_DURATION_S 1.0 / (double) FPS
 
-MainWindow::MainWindow() : Container(MAIN_WINDOW_DEFAULT_WIDTH, MAIN_WINDOW_DEFAULT_HEIGHT){}
-MainWindow::MainWindow(int w, int h) : Container(w, h){}
-MainWindow::MainWindow(int x, int y, int w, int h) : Container(x, y, w, h){}
+MainWindow::MainWindow() : MainWindow(MAIN_WINDOW_DEFAULT_WIDTH, MAIN_WINDOW_DEFAULT_HEIGHT){}
 
 int MainWindow::init(){
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0){
@@ -36,6 +34,12 @@ int MainWindow::init(){
 		return 1;
 	}
 	printf("sdl didnt die \\o/\n");
+
+	if (TTF_Init()){
+		printf("ttf init error: %s\n", TTF_GetError());
+		return 1;
+	}
+	printf("ttf didnt die \\o/\n");
 
 	linkedWindow = SDL_CreateWindow(
 		"Stellar Calculator",

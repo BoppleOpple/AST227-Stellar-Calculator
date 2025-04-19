@@ -10,9 +10,9 @@ class MainWindow : public Container {
 		void addMenuBar();
 		void addEMGraph();
 	public:
+		using Container::Container;
+
 		MainWindow();
-		MainWindow(int w, int h);
-		MainWindow(int x, int y, int w, int h);
 
 		int init(); // initialises renderer and such
 		int tick(double deltaTime, IOHandler &io);

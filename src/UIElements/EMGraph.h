@@ -17,6 +17,8 @@ class EMGraph : public Pane {
 		std::vector<SDL_Point> verts;
 
 	public:
+		using Pane::Pane;
+		
 		EMGraph();
 		EMGraph(int w, int h);
 		EMGraph(int x, int y, int w, int h);

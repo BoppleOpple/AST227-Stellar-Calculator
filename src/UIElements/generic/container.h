@@ -10,9 +10,7 @@ class Container : public Pane {
 		std::map<std::string, std::shared_ptr<Pane>> panes;
 
 	public:
-		Container();
-		Container(int w, int h);
-		Container(int x, int y, int w, int h);
+		using Pane::Pane;
 
 		int tick(double deltaTime, IOHandler &io);
 		int render();
